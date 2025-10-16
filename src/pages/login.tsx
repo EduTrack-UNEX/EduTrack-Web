@@ -2,7 +2,7 @@ import '../styles/Login.css';
 import Navbar from '../components/Navbar/navbar';
 import { useId } from "react"
 
-const Login: React.FC = () => {
+const Cadastro: React.FC = () => {
   const email = useId()
   const password = useId()
 
@@ -37,6 +37,6 @@ const Login: React.FC = () => {
       <div className="bottom-wave"></div>
     </>
   )
-};
+}
 
-export default Login;
+export default Cadastro
