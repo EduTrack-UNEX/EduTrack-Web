@@ -1,8 +1,11 @@
-import React from 'react';
 import '../styles/Login.css';
 import Navbar from '../components/Navbar/navbar';
+import { useId } from "react"
 
 const Login: React.FC = () => {
+  const email = useId()
+  const password = useId()
+
   return (
     <>
       <Navbar />
@@ -12,20 +15,28 @@ const Login: React.FC = () => {
           <form>
             <div className="form-group">
               <label htmlFor="email">Login</label>
-              <input type="email" id="email" placeholder="Digite seu e-mail" />
+              <input type="email" id={email} placeholder="Digite seu e-mail" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Senha</label>
-              <input type="password" id="password" placeholder="Digite sua senha" />
-              <a href="#" className="forgot-password">Esqueceu a senha?</a>
+              <input
+                type="password"
+                id={password}
+                placeholder="Digite sua senha"
+              />
+              <a href="#!" className="forgot-password">
+                Esqueceu a senha?
+              </a>
             </div>
-            <button type="submit" className="login-button">Login</button>
+            <button type="submit" className="login-button">
+              Login
+            </button>
           </form>
         </div>
       </div>
       <div className="bottom-wave"></div>
     </>
-  );
+  )
 };
 
 export default Login;

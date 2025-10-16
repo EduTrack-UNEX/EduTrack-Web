@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import '../styles/AdcDisciplina.css';
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar/navbar";
+import { useId, useState } from "react"
+import "../styles/AdcDisciplina.css"
+import Navbar from "../components/Navbar/navbar"
 
 const AdcDisciplina: React.FC = () => {
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [loading, setLoading] = useState(false);
-  
+  const [nome, setNome] = useState("")
+  const [descricao, setDescricao] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const nomeDisciplina = useId()
+  const descricaoDisciplina = useId()
 
   const handleSave = async () => {
     if (!nome.trim()) {
-      alert("O nome da disciplina é obrigatório!");
-      return;
+      alert("O nome da disciplina é obrigatório!")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
       const response = await fetch("URL_DO_BACKEND/api/disciplinas", {
@@ -27,27 +28,27 @@ const AdcDisciplina: React.FC = () => {
           nome: nome,
           descricao: descricao,
         }),
-      });
+      })
 
-      if (!response.ok) throw new Error("Erro ao salvar disciplina");
+      if (!response.ok) throw new Error("Erro ao salvar disciplina")
 
-      const data = await response.json();
-      console.log("Disciplina salva:", data);
-      alert("Disciplina salva com sucesso!");
-      setNome("");
-      setDescricao("");
+      const data = await response.json()
+      console.log("Disciplina salva:", data)
+      alert("Disciplina salva com sucesso!")
+      setNome("")
+      setDescricao("")
     } catch (error) {
-      console.error(error);
-      alert("Erro ao salvar disciplina. Tente novamente.");
+      console.error(error)
+      alert("Erro ao salvar disciplina. Tente novamente.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleCancel = () => {
-    setNome("");
-    setDescricao("");
-  };
+    setNome("")
+    setDescricao("")
+  }
 
   return (
     <>
@@ -61,7 +62,7 @@ const AdcDisciplina: React.FC = () => {
             <label htmlFor="nomeDisciplina">Nome*</label>
             <input
               type="text"
-              id="nomeDisciplina"
+              id={nomeDisciplina}
               placeholder="Digite o nome da disciplina"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
@@ -71,7 +72,7 @@ const AdcDisciplina: React.FC = () => {
           <div className="form-group">
             <label htmlFor="descricaoDisciplina">Descrição</label>
             <textarea
-              id="descricaoDisciplina"
+              id={descricaoDisciplina}
               rows={5}
               placeholder="Digite uma descrição"
               value={descricao}
@@ -81,14 +82,25 @@ const AdcDisciplina: React.FC = () => {
         </div>
 
         <div className="form-actions-centralized">
-          <button className="btn btn-cancel" onClick={handleCancel}>Cancelar</button>
-          <button className="btn btn-save" onClick={handleSave} disabled={loading}>
+          <button
+            type="button"
+            className="btn btn-cancel"
+            onClick={handleCancel}
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className="btn btn-save"
+            onClick={handleSave}
+            disabled={loading}
+          >
             {loading ? "Salvando..." : "Salvar"}
           </button>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AdcDisciplina;
+export default AdcDisciplina
