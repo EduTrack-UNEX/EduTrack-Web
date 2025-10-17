@@ -70,7 +70,7 @@ const Login: React.FC = () => {
                 className="w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-[#333] focus:border-primary-blue focus:ring-2 focus:ring-primary-blue/20"
                 required
               />
-              <a href="#" className="block text-right mt-3 text-black no-underline text-xs font-bold font-[signika] hover:underline">Esqueceu a senha?</a>
+              <a href="#" className="block text-right mt-3 text-black no-underline text-xs font-[signika] hover:underline">Esqueceu a senha?</a>
             </div>
 
             {error && <p className="text-red-500 mb-4">{error}</p>}

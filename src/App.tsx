@@ -5,7 +5,7 @@ import AdcDisciplina from './pages/AdcDisciplina';
 function App() {
   return (
     <div className="App">
-      <AdcDisciplina /> 
+      <Login /> 
     </div>
   );
 }
