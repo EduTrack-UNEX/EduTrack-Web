@@ -57,7 +57,7 @@ const AdcDisciplina: React.FC = () => {
           ADICIONAR DISCIPLINA
         </h1>
 
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-[500px] border-2 border-[#293296] font-['Signika']"> {/* Mantendo a largura original */}
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-[500px] border-2 border-[#293296] font-['Signika']"> 
           <div className="mb-4 w-4/5 mx-auto">
             <label htmlFor="nomeDisciplina" className="block mb-2 font-['Signika'] text-[#293296]">Nome*</label>
             <input
