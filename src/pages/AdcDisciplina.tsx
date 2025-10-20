@@ -1,22 +1,20 @@
-import { useId, useState } from "react"
-import "../styles/AdcDisciplina.css"
-import Navbar from "../components/Navbar/navbar"
+import { useState } from "react";
+import Navbar from "../components/Navbar/navbar";
 
+const inputClasses = "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full" 
 const AdcDisciplina: React.FC = () => {
-  const [nome, setNome] = useState("")
-  const [descricao, setDescricao] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  const nomeDisciplina = useId()
-  const descricaoDisciplina = useId()
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [loading, setLoading] = useState(false);
+  
 
   const handleSave = async () => {
     if (!nome.trim()) {
-      alert("O nome da disciplina é obrigatório!")
-      return
+      alert("O nome da disciplina é obrigatório!");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       const response = await fetch("URL_DO_BACKEND/api/disciplinas", {
@@ -28,79 +26,94 @@ const AdcDisciplina: React.FC = () => {
           nome: nome,
           descricao: descricao,
         }),
-      })
+      });
 
-      if (!response.ok) throw new Error("Erro ao salvar disciplina")
+      if (!response.ok) throw new Error("Erro ao salvar disciplina");
 
-      const data = await response.json()
-      console.log("Disciplina salva:", data)
-      alert("Disciplina salva com sucesso!")
-      setNome("")
-      setDescricao("")
+      const data = await response.json();
+      console.log("Disciplina salva:", data);
+      alert("Disciplina salva com sucesso!");
+      setNome("");
+      setDescricao("");
     } catch (error) {
-      console.error(error)
-      alert("Erro ao salvar disciplina. Tente novamente.")
+      console.error(error);
+      alert("Erro ao salvar disciplina. Tente novamente.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleCancel = () => {
-    setNome("")
-    setDescricao("")
-  }
+    setNome("");
+    setDescricao("");
+  };
 
   return (
-    <>
-      <Navbar />
+    
+    <div className="flex flex-col h-screen bg-gray-100 font-sans">
+      <Navbar /> 
+      <div className="flex flex-col items-center justify-start flex-grow pt-28 overflow-y-auto px-4">
+        
+    
+        <h1 className="font-['Permanent_Marker'] text-3xl text-[#293296] mb-2 text-center">
+          Adicionar Disciplina
+        </h1>
+        
+       
+        <img 
+            src="/underline2.svg"
+            className="w-auto h-auto mx-auto mt-[-10px] mb-8" 
+            style={{maxWidth: '150px'}}
+            alt="Sublinhado"
+          />
 
-      <div className="container">
-        <h1 className="title">ADICIONAR DISCIPLINA</h1>
-
-        <div className="form-card">
-          <div className="form-group">
-            <label htmlFor="nomeDisciplina">Nome*</label>
+        <div className="p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-[500px] border-2 border-[#293296] font-['Signika']">
+          <div className="mb-4 w-4/5 mx-auto">
+            <label htmlFor="nomeDisciplina" className="block mb-2 font-['Signika'] text-[#293296]">Nome*</label>
             <input
               type="text"
-              id={nomeDisciplina}
+              id="nomeDisciplina"
               placeholder="Digite o nome da disciplina"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
+              className={inputClasses}
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="descricaoDisciplina">Descrição</label>
+          <div className="mb-4 w-4/5 mx-auto">
+            <label htmlFor="descricaoDisciplina" className="block mb-2 font-['Signika'] text-[#293296]">Descrição</label> 
             <textarea
-              id={descricaoDisciplina}
-              rows={5}
+              id="descricaoDisciplina"
+              rows={3}
               placeholder="Digite uma descrição"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
+              className={inputClasses}
             ></textarea>
           </div>
         </div>
 
-        <div className="form-actions-centralized">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 w-full max-w-[500px]">
           <button
             type="button"
-            className="btn btn-cancel"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleCancel}
           >
             Cancelar
           </button>
           <button
             type="button"
-            className="btn btn-save"
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleSave}
             disabled={loading}
           >
             {loading ? "Salvando..." : "Salvar"}
           </button>
         </div>
+        <div className="h-8"></div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default AdcDisciplina
+export default AdcDisciplina;
