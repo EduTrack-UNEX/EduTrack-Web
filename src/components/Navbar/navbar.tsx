@@ -1,18 +1,28 @@
-import React from 'react';
+import React from "react";
 
-const Navbar: React.FC = () => {
-  return (
-    <>
-      <nav className="relative w-full h-[100px] bg-[#293296] rounded-b-[50%_50%] flex justify-center items-center box-border z-20 overflow-hidden">
-        <ul className="list-none m-0 p-0 flex gap-10">
-          <li><a href="home" className="no-underline text-white font-['Permanent_Marker'] text-2xl font-normal transition-colors duration-300 hover:text-[#f0f0f0]">HOME</a></li>
-          <li><a href="sobre" className="no-underline text-white font-['Permanent_Marker'] text-2xl font-normal transition-colors duration-300 hover:text-[#f0f0f0]">SOBRE</a></li>
-          <li><a href="contato" className="no-underline text-white font-['Permanent_Marker'] text-2xl font-normal transition-colors duration-300 hover:text-[#f0f0f0]">CONTATO</a></li>
-        </ul>
-      </nav>
-      <div className="fixed bottom-0 left-0 w-full h-[100px] bg-[#293296] rounded-t-[50%_50%] z-0"></div>
-    </>
-  );
-};
+const links = [
+  { label: "HOME", href: "#home" },
+  { label: "SOBRE", href: "#sobre" },
+  { label: "CONTATO", href: "#contato" },
+];
+
+const Navbar: React.FC = () => (
+  <>
+  <nav className="fixed top-0 left-0 z-10 w-full h-[80px] bg-[#293296] rounded-b-[40px] flex justify-center items-center shadow-md px-4 md:px-0">
+    <div className="flex flex-wrap justify-center gap-4 md:gap-16">
+      {links.map(link => (
+        <a
+          key={link.href}
+          href={link.href}
+          className="text-white font-['Permanent_Marker'] text-xl transition-colors duration-300 hover:text-[#e0e0e0]"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+  <footer className="fixed bottom-0 left-0 w-full h-[100px] bg-[#293296] rounded-t-[45px] z-0"></footer>
+  </>
+);
 
 export default Navbar;

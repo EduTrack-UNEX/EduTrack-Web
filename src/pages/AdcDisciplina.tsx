@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/navbar";
 
+const inputClasses = "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full" 
 const AdcDisciplina: React.FC = () => {
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -52,12 +53,21 @@ const AdcDisciplina: React.FC = () => {
     
     <div className="flex flex-col h-screen bg-gray-100 font-sans">
       <Navbar /> 
-      <div className="flex flex-col items-center justify-start flex-grow pt-8 overflow-y-auto">
-        <h1 className="font-['Permanent_Marker'] text-2xl text-[#293296] mb-4 text-center relative pb-2 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:w-full after:h-1 after:bg-[#293296] after:rounded-sm md:after:w-[120%]">
-          ADICIONAR DISCIPLINA
+      <div className="flex flex-col items-center justify-start flex-grow pt-28 overflow-y-auto px-4">
+        
+    
+        <h1 className="font-['Permanent_Marker'] text-3xl text-[#293296] mb-2 text-center">
+          Adicionar Disciplina
         </h1>
+        
+       
+        <img 
+            src="/underline2.svg"
+            className="w-auto h-auto mx-auto mt-[-10px] mb-8" 
+            style={{maxWidth: '150px'}} 
+          />
 
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-[500px] border-2 border-[#293296] font-['Signika']"> 
+        <div className="p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-[500px] border-2 border-[#293296] font-['Signika']">
           <div className="mb-4 w-4/5 mx-auto">
             <label htmlFor="nomeDisciplina" className="block mb-2 font-['Signika'] text-[#293296]">Nome*</label>
             <input
@@ -66,8 +76,8 @@ const AdcDisciplina: React.FC = () => {
               placeholder="Digite o nome da disciplina"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
+              className={inputClasses}
               required
-              className="w-full p-3 border border-[#293296] rounded-md text-black focus:outline-none focus:ring-1 focus:ring-[#293296]" 
             />
           </div>
           <div className="mb-4 w-4/5 mx-auto">
@@ -78,26 +88,27 @@ const AdcDisciplina: React.FC = () => {
               placeholder="Digite uma descrição"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              className="p-3 border border-[#293296] rounded-md text-black resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full" 
+              className={inputClasses}
             ></textarea>
           </div>
         </div>
 
-        <div className="flex justify-center gap-5 mt-6 w-full max-w-sm">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 w-full max-w-[500px]">
           <button
-            className="px-6 py-3 border-2 border-[#962929] text-[#962929] bg-white rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleCancel}
           >
             Cancelar
           </button>
           <button
-            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] bg-white rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleSave}
             disabled={loading}
           >
             {loading ? "Salvando..." : "Salvar"}
           </button>
         </div>
+        <div className="h-8"></div>
       </div>
     </div>
   );
