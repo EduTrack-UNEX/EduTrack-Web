@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import './Navbar.css';
-=======
-import React from "react";
->>>>>>> 4dae3be8ce2d5d48fce55f9249f8391f7d9b3ece
-
 const links = [
   { label: "HOME", href: "#home" },
   { label: "SOBRE", href: "#sobre" },

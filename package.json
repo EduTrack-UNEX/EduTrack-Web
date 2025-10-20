@@ -12,12 +12,8 @@
     "@tailwindcss/vite": "^4.1.12",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-<<<<<<< HEAD
     "react-router-dom": "^7.9.4",
     "tailwindcss": "^4.1.12"
-=======
-    "react-router-dom": "^7.9.4"
->>>>>>> 4dae3be8ce2d5d48fce55f9249f8391f7d9b3ece
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",

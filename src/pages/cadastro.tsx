@@ -1,66 +1,135 @@
+import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar"
-import { useId } from "react"
 
-const Cadastro: React.FC = () => {
-  const email = useId()
-  const password = useId()
+const inputClasses =
+  "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]"
+const Login: React.FC = () => {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const nameId = useId()
+  const emailId = useId()
+  const passwordId = useId()
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    try {
+      const response = await fetch("URL_DO_BACKEND/api/disciplinas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao fazer login")
+      }
+
+      localStorage.setItem("token", data.token)
+      console.log("Login bem-sucedido", data)
+      window.location.href = "/dashboard"
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
       <Navbar />
-      <div className="flex justify-center items-center h-[calc(100vh-200px)] py-10 px-5">
-        <div className="bg-white border border-[#293296] rounded-[10px] shadow-xl p-10 w-[622px] max-w-[90%] text-center box-border z-10">
-          <h1 className="relative font-permanent-marker text-2xl text-[#293296] font-normal mb-6 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-[10px] after:w-[100px] after:h-[3px] after:bg-[#293296] after:rounded-[2px]" style={{fontFamily: "'Permanent Marker', cursive"}}>
+      <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] pt-55">
+        <div className="mb-10">
+          <h1 className="font-['Permanent_Marker'] text-5xl text-[#293296] mb-3 relative font-normal">
             Cadastro de Usuário
           </h1>
-          <form>
-            <div className="text-left mb-6">
-              <label htmlFor="name" className="block mb-2 font-signika font-bold text-[#293296]">
+          <img
+            src="/underline2.svg"
+            className="w-auto h-auto mx-auto mt-[-10px] mb-8"
+            style={{ maxWidth: "230px" }}
+            alt="Sublinhado"
+          />
+        </div>
+        <div className="rounded-lg shadow-md pb-9 pt-4 w-[622px] text-center box-border border-[2px] border-[#293296] z-10">
+          <form onSubmit={handleLogin}>
+            <div className="w-[423px] mx-auto text-left">
+              <label
+                htmlFor="name"
+                className="block mb-2 font-[signika] text-[#293296]"
+              >
                 Nome
               </label>
               <input
                 type="text"
-                id={email}
-                placeholder="Digite seu nome"
-                className="w-full p-3 border border-[#293296] rounded-[5px] box-border text-base outline-none font-signika text-[#333] transition focus:border-[#293296] focus:shadow-[0_0_0_2px_rgba(41,50,150,0.2)]"
+                id={nameId}
+                placeholder="Digite seu Nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={inputClasses}
               />
             </div>
-            <div className="text-left mb-6">
-              <label htmlFor="email" className="block mb-2 font-signika font-bold text-[#293296]">
-                Email
+            <div className="w-[423px] mx-auto text-left">
+              <label
+                htmlFor="email"
+                className="block mx-auto mb-2 font-[signika]  text-[#293296]"
+              >
+                E-mail
               </label>
               <input
                 type="email"
-                id={email}
+                id={emailId}
                 placeholder="Digite seu e-mail"
-                className="w-full p-3 border border-[#293296] rounded-[5px] box-border text-base outline-none font-signika text-[#333] transition focus:border-[#293296] focus:shadow-[0_0_0_2px_rgba(41,50,150,0.2)]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={inputClasses}
               />
             </div>
-            <div className="text-left mb-6">
-              <label htmlFor="password" className="block mb-2 font-signika font-bold text-[#293296]">
+            <div className="w-[423px] mx-auto text-left">
+              <label
+                htmlFor="password"
+                className="block mb-2 font-[signika] text-[#293296]"
+              >
                 Senha
               </label>
               <input
                 type="password"
-                id={password}
+                id={passwordId}
                 placeholder="Digite sua senha"
-                className="w-full p-3 border border-[#293296] rounded-[5px] box-border text-base outline-none font-signika text-[#333] transition focus:border-[#293296] focus:shadow-[0_0_0_2px_rgba(41,50,150,0.2)]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={inputClasses}
               />
             </div>
-            <div className="flex justify-center gap-22 ">
-              <button type="button" className="bg-transparent border border-[#968D29] text-[#968D29] px-10 py-2.5 rounded-[20px] text-base font-signika block w-auto mt-0 mb-0 cursor-pointer hover:opacity-90 transition backgro">
-                Cancelar
-              </button>
-              <button type="submit" className="bg-transparent border border-[#962929] text-[#962929] px-10 py-2.5 rounded-[20px] text-base font-signika block w-auto mt-0 mb-0 cursor-pointer hover:opacity-90 transition">
-                Cadastrar
-              </button>
-            </div>
+
+            {error && <p className="text-red-500 mb-4">{error}</p>}
           </form>
         </div>
+        <div className="flex justify-center gap-4 mt-16">
+          <button
+            type="button"
+            className="bg-transparent border-[2px] border-[#962929] text-[#962929] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block cursor-pointer hover:opacity-90 transition"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="bg-transparent border-[2px] border-[#968D29] text-[#968D29] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block w-auto cursor-pointer hover:opacity-90 transition"
+          >
+            Cadastrar
+          </button>
+        </div>
       </div>
-      <div className="w-full h-24 absolute left-0 bottom-0 z-0 rounded-t-[48%_54%_73%_27%/71%_100%_0%_29%] bg-gradient-to-t from-[#293296] to-transparent"></div>
     </>
   )
 }
 
-export default Cadastro
+export default Login

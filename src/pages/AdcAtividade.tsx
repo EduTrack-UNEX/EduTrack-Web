@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar";
 
 
@@ -12,6 +12,14 @@ const AdcAtividade: React.FC = () => {
   const [valorAtividade, setValorAtividade] = useState("");
   const [status, setStatus] = useState<'concluida' | 'incompleta' | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const atividadeFormId = useId()
+  const nameId = useId()
+  const descricaoId = useId()
+  const dataEntregaId = useId()
+  const valorAtividadeId = useId()
+  const concluidaId = useId()
+  const incompletaId = useId()
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,14 +90,14 @@ const AdcAtividade: React.FC = () => {
         />
 
         <div className="p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-lg border-2 border-[#293296] font-['Signika']">
-          <form onSubmit={handleSave} id="atividadeForm">
+          <form onSubmit={handleSave} id={atividadeFormId}>
             <div className="mb-4">
               <label htmlFor="nome" className="block mb-2 text-[#293296]">
                 Nome*
               </label>
               <input
                 type="text"
-                id="nome"
+                id={nameId}
                 placeholder="Digite o nome da atividade"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
@@ -103,7 +111,7 @@ const AdcAtividade: React.FC = () => {
                 Descrição
               </label>
               <textarea
-                id="descricao"
+                id={descricaoId}
                 rows={3}
                 placeholder="Digite uma descrição"
                 value={descricao}
@@ -121,7 +129,7 @@ const AdcAtividade: React.FC = () => {
               </label>
               <input
                 type="text"
-                id="dataEntrega"
+                id={dataEntregaId}
                 placeholder="Dia/Mês/Ano"
                 value={dataEntrega}
                 onChange={handleDataChange}
@@ -138,7 +146,7 @@ const AdcAtividade: React.FC = () => {
                 Valor da Atividade (Nota)*
               </label>
               <input
-                id="valorAtividade"
+                id={valorAtividadeId}
                 type="text"
                 inputMode="decimal"
                 placeholder="Digite quanto vale a atividade"
@@ -160,7 +168,7 @@ const AdcAtividade: React.FC = () => {
                 >
                   <input
                     type="checkbox"
-                    id="concluida"
+                    id={concluidaId}
                     checked={status === "concluida"}
                     onChange={() =>
                       setStatus(status === "concluida" ? null : "concluida")
@@ -204,7 +212,7 @@ const AdcAtividade: React.FC = () => {
                 >
                   <input
                     type="checkbox"
-                    id="incompleta"
+                    id={incompletaId}
                     checked={status === "incompleta"}
                     onChange={() =>
                       setStatus(status === "incompleta" ? null : "incompleta")

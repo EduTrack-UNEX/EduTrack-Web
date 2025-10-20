@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar"
 
 const inputClasses =
@@ -8,6 +8,9 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  const emailId = useId()
+  const passwordId = useId()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,12 +66,11 @@ const Login: React.FC = () => {
               </label>
               <input
                 type="email"
-                id="email"
+                id={emailId}
                 placeholder="Digite seu e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputClasses}
-                required
               />
             </div>
             <div className="text-left mb-6">
@@ -80,12 +82,11 @@ const Login: React.FC = () => {
               </label>
               <input
                 type="password"
-                id="password"
+                id={passwordId}
                 placeholder="Digite sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={inputClasses}
-                required
               />
               <a
                 href="#!"
