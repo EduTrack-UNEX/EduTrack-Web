@@ -68,5 +68,8 @@ Após a instalação e configuração, você está pronto para iniciar o servido
     <http://localhost:5173/>
     <http://localhost:5173/login>
     <http://localhost:5173/cadastro>
+    <http://localhost:5173/adicionar-disciplina>
+    <http://localhost:5173/adicionar-atividade>
+    <http://localhost:5173/listagem-disciplina>
 
 Pronto! O ambiente de desenvolvimento do **EduTrack-Web** está configurado e rodando na sua máquina.
