@@ -1,5 +1,5 @@
 import { useId, useState } from "react"
-import Navbar from "../components/Navbar/navbar";
+import Navbar from "../components/Navbar/navbar"
 
 
 const fieldClasses = "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-['Signika'] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]";

@@ -1,5 +1,5 @@
 import { useId, useState } from "react"
-import Navbar from "../components/Navbar/navbar";
+import Navbar from "../components/Navbar/navbar"
 
 const inputClasses = "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full" 
 const AdcDisciplina: React.FC = () => {

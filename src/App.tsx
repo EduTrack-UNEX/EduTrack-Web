@@ -4,6 +4,7 @@ import Login from './pages/login';
 import AdcDisciplina from './pages/AdcDisciplina';
 import AdcAtividade from './pages/AdcAtividade';
 import Cadastro from "./pages/cadastro"
+import ListagemDisciplina from "./pages/ListagemDisciplina"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/adicionar-disciplina" element={<AdcDisciplina />} />
           <Route path="/adicionar-atividade" element={<AdcAtividade />} />
+          <Route path="/listagem-disciplina" element={<ListagemDisciplina />} />
         </Routes>
       </div>
     </BrowserRouter>
