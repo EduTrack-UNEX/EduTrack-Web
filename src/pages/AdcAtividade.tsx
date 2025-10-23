@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Navbar from "../components/Navbar/navbar";
+import { useId, useState } from "react"
+import Navbar from "../components/Navbar/navbar"
 
 
 const fieldClasses = "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-['Signika'] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]";
@@ -12,6 +12,14 @@ const AdcAtividade: React.FC = () => {
   const [valorAtividade, setValorAtividade] = useState("");
   const [status, setStatus] = useState<'concluida' | 'incompleta' | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const atividadeFormId = useId()
+  const nameId = useId()
+  const descricaoId = useId()
+  const dataEntregaId = useId()
+  const valorAtividadeId = useId()
+  const concluidaId = useId()
+  const incompletaId = useId()
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,28 +76,28 @@ const AdcAtividade: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#EBEBEB] font-sans">
       <Navbar />
-      
+
       <div className="flex flex-col items-center justify-start flex-grow pt-28 pb-40 px-4 overflow-y-auto">
-        
         <h1 className="font-['Permanent_Marker'] text-3xl text-[#293296] mb-2 text-center">
-          Atividade 
+          Atividade
         </h1>
-        
-        <img 
+
+        <img
           src="/underline2.svg"
           alt="Sublinhado"
-          className="w-auto h-auto mx-auto mt-[-10px] mb-8" 
-          style={{maxWidth: '150px'}} 
+          className="w-auto h-auto mx-auto mt-[-10px] mb-8"
+          style={{ maxWidth: "150px" }}
         />
 
         <div className="p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-lg border-2 border-[#293296] font-['Signika']">
-          <form onSubmit={handleSave} id="atividadeForm">
-            
+          <form onSubmit={handleSave} id={atividadeFormId}>
             <div className="mb-4">
-              <label htmlFor="nome" className="block mb-2 text-[#293296]">Nome*</label>
+              <label htmlFor="nome" className="block mb-2 text-[#293296]">
+                Nome*
+              </label>
               <input
                 type="text"
-                id="nome"
+                id={nameId}
                 placeholder="Digite o nome da atividade"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
@@ -98,11 +106,12 @@ const AdcAtividade: React.FC = () => {
               />
             </div>
 
-            
             <div className="mb-4">
-              <label htmlFor="descricao" className="block mb-2 text-[#293296]">Descrição</label>
+              <label htmlFor="descricao" className="block mb-2 text-[#293296]">
+                Descrição
+              </label>
               <textarea
-                id="descricao"
+                id={descricaoId}
                 rows={3}
                 placeholder="Digite uma descrição"
                 value={descricao}
@@ -110,12 +119,17 @@ const AdcAtividade: React.FC = () => {
                 className={`${fieldClasses} resize-y`}
               />
             </div>
-            
+
             <div className="mb-4">
-              <label htmlFor="dataEntrega" className="block mb-2 text-[#293296]">Data de Entrega</label>
+              <label
+                htmlFor="dataEntrega"
+                className="block mb-2 text-[#293296]"
+              >
+                Data de Entrega
+              </label>
               <input
                 type="text"
-                id="dataEntrega"
+                id={dataEntregaId}
                 placeholder="Dia/Mês/Ano"
                 value={dataEntrega}
                 onChange={handleDataChange}
@@ -125,9 +139,14 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="valorAtividade" className="block mb-2 text-[#293296]">Valor da Atividade (Nota)*</label>
+              <label
+                htmlFor="valorAtividade"
+                className="block mb-2 text-[#293296]"
+              >
+                Valor da Atividade (Nota)*
+              </label>
               <input
-                id="valorAtividade"
+                id={valorAtividadeId}
                 type="text"
                 inputMode="decimal"
                 placeholder="Digite quanto vale a atividade"
@@ -139,59 +158,92 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-2">
-              <label className="block mb-2 text-[#293296]">Status da Atividade</label>
+              <label htmlFor="concluida" className="block mb-2 text-[#293296]">
+                Status da Atividade
+              </label>
               <div className="flex flex-col gap-3 mt-3">
-
-                <label 
-                  htmlFor="concluida" 
+                <label
+                  htmlFor="concluida"
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <input 
-                    type="checkbox" 
-                    id="concluida"
-                    checked={status === 'concluida'}
-                    onChange={() => setStatus(status === 'concluida' ? null : 'concluida')}
-                    className="sr-only" 
+                  <input
+                    type="checkbox"
+                    id={concluidaId}
+                    checked={status === "concluida"}
+                    onChange={() =>
+                      setStatus(status === "concluida" ? null : "concluida")
+                    }
+                    className="sr-only"
                   />
-                  <div className={`
+                  <div
+                    className={`
                     h-4 w-4 flex-shrink-0 
                     border-2 border-[#293296] 
                     rounded-sm
                     flex items-center justify-center 
                     transition-colors
-                    ${status === 'concluida' ? 'bg-[#293296]' : ''}
-                  `}>
-                    {status === 'concluida' && (
-                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path>
+                    ${status === "concluida" ? "bg-[#293296]" : ""}
+                  `}
+                  >
+                    {status === "concluida" && (
+                      <svg
+                        className="w-2.5 h-2.5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        ></path>
                       </svg>
                     )}
                   </div>
                   <span className="text-[#293296]">Concluída</span>
                 </label>
 
-                <label 
-                  htmlFor="incompleta" 
+                <label
+                  htmlFor="incompleta"
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <input 
-                    type="checkbox" 
-                    id="incompleta"
-                    checked={status === 'incompleta'}
-                    onChange={() => setStatus(status === 'incompleta' ? null : 'incompleta')}
-                    className="sr-only" 
+                  <input
+                    type="checkbox"
+                    id={incompletaId}
+                    checked={status === "incompleta"}
+                    onChange={() =>
+                      setStatus(status === "incompleta" ? null : "incompleta")
+                    }
+                    className="sr-only"
                   />
-                  <div className={`
+                  <div
+                    className={`
                     h-4 w-4 flex-shrink-0 
                     border-2 border-[#293296] 
                     rounded-sm
                     flex items-center justify-center 
                     transition-colors
-                    ${status === 'incompleta' ? 'bg-[#293296]' : ''}
-                  `}>
-                    {status === 'incompleta' && (
-                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path>
+                    ${status === "incompleta" ? "bg-[#293296]" : ""}
+                  `}
+                  >
+                    {status === "incompleta" && (
+                      <svg
+                        className="w-2.5 h-2.5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        ></path>
                       </svg>
                     )}
                   </div>
@@ -199,19 +251,19 @@ const AdcAtividade: React.FC = () => {
                 </label>
               </div>
             </div>
-            
           </form>
         </div>
 
         {/* Botões */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 w-full max-w-lg">
           <button
+            type="button"
             className="px-6 py-3 border-2 border-[#962929] text-[#962929] bg-white rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
             onClick={handleCancel}
           >
             Cancelar
           </button>
-          
+
           <button
             type="submit"
             form="atividadeForm"
@@ -221,10 +273,9 @@ const AdcAtividade: React.FC = () => {
             {loading ? "Salvando..." : "Salvar"}
           </button>
         </div>
-
       </div>
     </div>
-  );
+  )
 };
 
 export default AdcAtividade;

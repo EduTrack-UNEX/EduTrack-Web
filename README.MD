@@ -6,8 +6,8 @@ Siga os passos abaixo para configurar e executar o **EduTrack-Web** em seu ambie
 
 Antes de começar, garanta que você tenha as seguintes ferramentas instaladas em sua máquina. As versões listadas são recomendações para garantir a compatibilidade.
 
-* **Node.js**: `v18.x` ou superior.
-* **npm**: `v9.x` ou superior (geralmente vem com o Node.js) ou **Yarn**: `v1.22.x` ou superior.
+* **Node.js**: `v18.x` ou superior projeto está na versão (22.18.0).
+* **npm**: `v9.x` ou superior (geralmente vem com o Node.js) recomendado a versão (11.6.2).
 * **Git**: Para clonar o repositório.
 
 Você pode verificar as versões com os seguintes comandos no seu terminal:
@@ -44,47 +44,32 @@ Com os pré-requisitos atendidos, siga este passo a passo:
         npm install
         ```
 
-    * Ou, se preferir usar **Yarn**:
-
-        ```bash
-        yarn install
-        ```
-
-### 🔑 3. Configuração das Variáveis de Ambiente
-
-As variáveis de ambiente são usadas para armazenar informações sensíveis, como credenciais de banco de dados e chaves de API, fora do código-fonte.
-
-1. **Crie o arquivo de ambiente:**
-    Copie o arquivo de exemplo `.env.example` para um novo arquivo chamado `.env`. É neste novo arquivo que você colocará suas configurações locais.
-
-    ```bash
-    cp .env.example .env
-    ```
-
-2. **Preencha as variáveis:**
-    Abra o arquivo `.env` recém-criado em um editor de texto e preencha os valores para cada variável. Por exemplo:
-
-    ```env
-    # Exemplo de configuração do banco de dados
-    DATABASE_URL="postgresql://user:password@localhost:5432/edutrack_db"
-
-    # Chave secreta para a API
-    API_SECRET="sua-chave-secreta-aqui"
-    ```
-
-### ▶️ 4. Executando a Aplicação
+### ▶️ 3. Executando a Aplicação
 
 Após a instalação e configuração, você está pronto para iniciar o servidor de desenvolvimento.
 
-1. **Inicie o servidor:**
+1. **Instale as depêndencias**
+
+    ```bash
+    npm install
+    ```
+
+2. **Inicie o servidor:**
 
     ```bash
     npm run dev
     ```
 
-2. **Acesse no navegador:**
-    Abra seu navegador e acesse <http://localhost:3000> (ou a porta que estiver configurada no seu projeto).
+3. **Acesse no navegador:**
+    Abra seu navegador e acesse <http://localhost:5173/> (ou a porta que estiver configurada no seu projeto).
+
+4. **Acessar as rotas:**
+    Para acessar as rotas que já estão feitas:
+    <http://localhost:5173/>
+    <http://localhost:5173/login>
+    <http://localhost:5173/cadastro>
+    <http://localhost:5173/adicionar-disciplina>
+    <http://localhost:5173/adicionar-atividade>
+    <http://localhost:5173/listagem-disciplina>
 
 Pronto! O ambiente de desenvolvimento do **EduTrack-Web** está configurado e rodando na sua máquina.
-
-## 📜 Scripts do Projeto

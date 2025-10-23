@@ -1,43 +1,46 @@
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar/navbar';
+import { useId, useState } from "react"
+import Navbar from "../components/Navbar/navbar"
 
-const inputClasses = "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]";
+const inputClasses =
+  "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]"
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const emailId = useId()
+  const passwordId = useId()
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError("")
 
     try {
       const response = await fetch("URL_DO_BACKEND/api/disciplinas", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Erro ao fazer login');
+        throw new Error(data.message || "Erro ao fazer login")
       }
 
-      
-      localStorage.setItem('token', data.token);
-      console.log('Login bem-sucedido', data);
-      window.location.href = '/dashboard';
+      localStorage.setItem("token", data.token)
+      console.log("Login bem-sucedido", data)
+      window.location.href = "/dashboard"
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
@@ -47,36 +50,50 @@ const Login: React.FC = () => {
          <h1 className="font-['Permanent_Marker'] text-4xl text-[#293296] mb-3 relative font-normal">
             Login
           </h1>
-          <img 
+          <img
             src="/underline-scribble.svg"
-            className="w-auto h-auto mx-auto mt-[-10px] mb-8" 
-            style={{maxWidth: '150px'}} 
+            className="w-auto h-auto mx-auto mt-[-10px] mb-8"
+            style={{ maxWidth: "150px" }}
+            alt="Sublinhado"
           />
           <form onSubmit={handleLogin}>
             <div className="text-left mb-6">
-              <label htmlFor="email" className="block mb-2 font-[signika]  text-[#293296]">Login</label>
+              <label
+                htmlFor="email"
+                className="block mb-2 font-[signika]  text-[#293296]"
+              >
+                Login
+              </label>
               <input
                 type="email"
-                id="email"
+                id={emailId}
                 placeholder="Digite seu e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputClasses}
-                required
               />
             </div>
             <div className="text-left mb-6">
-              <label htmlFor="password" className="block mb-2 font-[signika] text-[#293296]">Senha</label>
+              <label
+                htmlFor="password"
+                className="block mb-2 font-[signika] text-[#293296]"
+              >
+                Senha
+              </label>
               <input
                 type="password"
-                id="password"
+                id={passwordId}
                 placeholder="Digite sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={inputClasses}
-                required
               />
-              <a href="#" className="block text-right mt-3 text-black no-underline text-xs font-[signika] hover:underline">Esqueceu a senha?</a>
+              <a
+                href="#!"
+                className="block text-right mt-3 text-black no-underline text-xs font-[signika] hover:underline"
+              >
+                Esqueceu a senha?
+              </a>
             </div>
 
             {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -86,14 +103,13 @@ const Login: React.FC = () => {
               disabled={loading}
               className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-lg cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-4 font-[signika] hover:opacity-90 disabled:opacity-50"
             >
-              {loading ? 'Entrando...' : 'Login'}
+              {loading ? "Entrando..." : "Login"}
             </button>
           </form>
         </div>
       </div>
-      
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

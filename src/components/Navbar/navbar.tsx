@@ -1,5 +1,3 @@
-import React from "react";
-
 const links = [
   { label: "HOME", href: "#home" },
   { label: "SOBRE", href: "#sobre" },
