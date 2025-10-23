@@ -45,9 +45,9 @@ const Login: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center items-center h-[calc(100vh-200px)] pt-55 px-5 py-10 sm:px-10">
-        <div className="rounded-lg shadow-md p-6 sm:p-10 w-full max-w-sm text-center box-border border border-[#293296] z-10">
-          <h1 className="font-['Permanent_Marker'] text-4xl text-[#293296] mb-3 relative font-normal">
+       <div className="flex justify-center items-center h-[calc(100vh-200px)] pt-55 px-5 py-10 sm:px-10">
+        <div className="rounded-lg shadow-md p-6 sm:p-10 w-full max-w-sm text-center box-border border border-[#293296] z-10 mt-10 mb-10">
+         <h1 className="font-['Permanent_Marker'] text-4xl text-[#293296] mb-3 relative font-normal">
             Login
           </h1>
           <img
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-base cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-4 font-[signika] hover:opacity-90 disabled:opacity-50"
+              className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-lg cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-4 font-[signika] hover:opacity-90 disabled:opacity-50"
             >
               {loading ? "Entrando..." : "Login"}
             </button>
