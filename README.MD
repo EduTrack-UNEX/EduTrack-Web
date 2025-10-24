@@ -64,12 +64,12 @@ Após a instalação e configuração, você está pronto para iniciar o servido
     Abra seu navegador e acesse <http://localhost:5173/> (ou a porta que estiver configurada no seu projeto).
 
 4. **Acessar as rotas:**
-    Para acessar as rotas que já estão feitas:
-    <http://localhost:5173/>
-    <http://localhost:5173/login>
-    <http://localhost:5173/cadastro>
-    <http://localhost:5173/adicionar-disciplina>
-    <http://localhost:5173/adicionar-atividade>
-    <http://localhost:5173/listagem-disciplina>
+    Para acessar as rotas que já estão feitas: </br>
+    <http://localhost:5173/> </br>
+    <http://localhost:5173/login> </br>
+    <http://localhost:5173/cadastro> </br>
+    <http://localhost:5173/adicionar-disciplina> </br>
+    <http://localhost:5173/adicionar-atividade> </br>
+    <http://localhost:5173/listagem-disciplina> </br>
 
 Pronto! O ambiente de desenvolvimento do **EduTrack-Web** está configurado e rodando na sua máquina.
