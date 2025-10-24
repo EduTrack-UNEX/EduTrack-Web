@@ -41,7 +41,7 @@ const Cadastro: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] pt-55">
+      <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] pt-40 ">
         <div className="mb-10">
           <h1 className="font-['Permanent_Marker'] text-5xl text-[#293296] mb-3 relative font-normal text-center">
             Cadastro de Usuário
