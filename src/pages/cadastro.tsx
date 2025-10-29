@@ -1,47 +1,123 @@
 import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar"
+import { z } from "zod"
+import ModalDialog from "../components/ModalDialog"
 
 const inputClasses =
   "w-full h-[61px] p-3 border border-[#293296] rounded-[10px] box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]"
 
+const cadastroSchema = z.object({
+  name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres."),
+  email: z.email("Por favor, insira um e-mail válido."),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres."),
+})
+
+type FormData = z.infer<typeof cadastroSchema>
+type FormErrors = Partial<Record<keyof FormData, string>>
+
 const Cadastro: React.FC = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    password: "",
+  })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [formErrors, setFormErrors] = useState<FormErrors>({})
+  const [apiError, setApiError] = useState("")
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
+  const [modalType, setModalType] = useState<"alert" | "success">("alert")
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL
 
   const nameId = useId()
   const emailId = useId()
   const passwordId = useId()
 
+  const handleInputChange =
+    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setFormData((prev) => ({ ...prev, [field]: value }))
+      if (formErrors[field]) {
+        setFormErrors((prev) => ({ ...prev, [field]: undefined }))
+      }
+    }
+
   const handleCadastro = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormErrors({})
+    setApiError("")
+
+    const validationResult = cadastroSchema.safeParse(formData)
+    if (!validationResult.success) {
+      const errors = z.flattenError(validationResult.error).fieldErrors
+      setFormErrors({
+        name: errors.name?.[0],
+        email: errors.email?.[0],
+        password: errors.password?.[0],
+      })
+
+      setModalTitle("Cadastro inválido")
+      setModalMessage("Preencha corretamente todos os campos obrigatórios.")
+      setModalType("alert")
+      setModalOpen(true)
+      setTimeout(() => setModalOpen(false), 2500)
+      return
+    }
+
     setLoading(true)
-    setError("")
     try {
-      const response = await fetch("", {
+      const response = await fetch(`${API_URL}/api/v1/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(validationResult.data),
       })
-      const data = await response.json()
-      if (!response.ok)
-        throw new Error(data.message || "Erro ao fazer handleCadastro")
 
-      localStorage.setItem("token", data.token)
-      window.location.href = "/dashboard"
-    } catch (err: any) {
-      setError(err.message)
+      let data: any = {}
+      const contentType = response.headers.get("content-type")
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json()
+      } else {
+        data = null
+      }
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Erro ao fazer cadastro")
+      }
+
+      setModalTitle("Cadastro realizado!")
+      setModalMessage("Seu cadastro foi concluído com sucesso.")
+      setModalType("success")
+      setModalOpen(true)
+
+      setTimeout(() => {
+        window.location.href = "/login"
+      }, 3000)
+    } catch (err) {
+      setModalTitle("Erro ao cadastrar")
+      setModalMessage(
+        err instanceof Error
+          ? err.message
+          : "Ocorreu um erro inesperado. Tente novamente.",
+      )
+      setModalType("alert")
+      setModalOpen(true)
+      setTimeout(() => setModalOpen(false), 3000)
     } finally {
       setLoading(false)
     }
   }
 
+  const handleCancel = () => {
+    window.location.href = "/"
+  }
+
   return (
     <>
       <Navbar />
-      <div className="flex flex-col justify-center items-center h-[calc(100vh-200px)] pt-40 ">
+      <div className="flex flex-col justify-center items-center h-auto min-h-[calc(100vh-200px)] pt-40 pb-20">
         <div className="mb-10">
           <h1 className="font-['Permanent_Marker'] text-5xl text-[#293296] mb-3 relative font-normal text-center">
             Cadastro de Usuário
@@ -53,71 +129,106 @@ const Cadastro: React.FC = () => {
             alt="Sublinhado"
           />
         </div>
-        <div className="rounded-lg shadow-md pb-9 pt-4 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl text-center box-border border-[2px] border-[#293296] z-10">
-          <form onSubmit={handleCadastro}>
-            <div className="w-full max-w-xs sm:max-w-md mx-auto text-left">
-              <label
-                htmlFor="name"
-                className="block mb-1 ml-2 font-[signika] text-[#293296]"
-              >
-                Nome
-              </label>
-              <input
-                type="text"
-                id={nameId}
-                placeholder="Digite seu Nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className={inputClasses}
-              />
-            </div>
-            <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left">
-              <label
-                htmlFor="email"
-                className="block mx-auto mb-1 ml-2 font-[signika] text-[#293296]"
-              >
-                E-mail
-              </label>
-              <input
-                type="email"
-                id={emailId}
-                placeholder="Digite seu e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={inputClasses}
-              />
-            </div>
-            <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left">
-              <label
-                htmlFor="password"
-                className="block mb-1 ml-2 font-[signika] text-[#293296]"
-              >
-                Senha
-              </label>
-              <input
-                type="password"
-                id={passwordId}
-                placeholder="Digite sua senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={inputClasses}
-              />
-            </div>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-          </form>
-        </div>
+
+        <form
+          onSubmit={handleCadastro}
+          className="rounded-lg shadow-md pb-9 pt-4 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl text-center box-border border-[2px] border-[#293296] z-10"
+        >
+          <div className="w-full max-w-xs sm:max-w-md mx-auto text-left mb-2">
+            <label
+              htmlFor={nameId}
+              className="block mb-1 ml-2 font-[signika] text-[#293296]"
+            >
+              Nome
+            </label>
+            <input
+              type="text"
+              id={nameId}
+              placeholder="Digite seu Nome"
+              value={formData.name}
+              onChange={handleInputChange("name")}
+              className={inputClasses}
+              disabled={loading}
+            />
+            {formErrors.name && (
+              <p className="text-red-500 text-sm mt-1 ml-2">
+                {formErrors.name}
+              </p>
+            )}
+          </div>
+
+          <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left mb-2">
+            <label
+              htmlFor={emailId}
+              className="block mx-auto mb-1 ml-2 font-[signika] text-[#293296]"
+            >
+              E-mail
+            </label>
+            <input
+              type="email"
+              id={emailId}
+              placeholder="Digite seu e-mail"
+              value={formData.email}
+              onChange={handleInputChange("email")}
+              className={inputClasses}
+              disabled={loading}
+            />
+            {formErrors.email && (
+              <p className="text-red-500 text-sm mt-1 ml-2">
+                {formErrors.email}
+              </p>
+            )}
+          </div>
+
+          <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left">
+            <label
+              htmlFor={passwordId}
+              className="block mb-1 ml-2 font-[signika] text-[#293296]"
+            >
+              Senha
+            </label>
+            <input
+              type="password"
+              id={passwordId}
+              placeholder="Digite sua senha"
+              value={formData.password}
+              onChange={handleInputChange("password")}
+              className={inputClasses}
+              disabled={loading}
+            />
+            {formErrors.password && (
+              <p className="text-red-500 text-sm mt-1 ml-2">
+                {formErrors.password}
+              </p>
+            )}
+          </div>
+
+          {apiError && <p className="text-red-500 mt-4 mb-2">{apiError}</p>}
+
+          <ModalDialog
+            open={modalOpen}
+            onOpenChange={setModalOpen}
+            title={modalTitle}
+            message={modalMessage}
+            type={modalType}
+          />
+        </form>
         <div className="flex justify-center gap-4 mt-16">
           <button
             type="button"
-            className="bg-transparent border-[2px] border-[#962929] text-[#962929] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block cursor-pointer hover:opacity-90 transition"
+            className="bg-transparent border-[2px] border-[#962929] text-[#962929] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block cursor-pointer hover:opacity-90 transition disabled:opacity-50"
+            onClick={handleCancel}
+            disabled={loading}
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="bg-transparent border-[2px] border-[#968D29] text-[#968D29] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block w-auto cursor-pointer hover:opacity-90 transition"
+            className="bg-transparent border-[2px] border-[#968D29] text-[#968D29] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block w-auto cursor-pointer hover:opacity-90 transition disabled:opacity-50"
+            disabled={loading}
+            onClick={handleCadastro}
           >
-            Cadastrar
+            {loading ? "Cadastrando..." : "Cadastrar"}
           </button>
         </div>
       </div>
