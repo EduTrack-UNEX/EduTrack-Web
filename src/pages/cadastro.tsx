@@ -216,7 +216,7 @@ const Cadastro: React.FC = () => {
         <div className="flex justify-center gap-4 mt-16">
           <button
             type="button"
-            className="bg-transparent border-[2px] border-[#962929] text-[#962929] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block cursor-pointer hover:opacity-90 transition disabled:opacity-50"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleCancel}
             disabled={loading}
           >
@@ -224,7 +224,7 @@ const Cadastro: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="bg-transparent border-[2px] border-[#968D29] text-[#968D29] px-6 py-2.5 rounded-[30px] text-base font-['signika'] block w-auto cursor-pointer hover:opacity-90 transition disabled:opacity-50"
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
             disabled={loading}
             onClick={handleCadastro}
           >

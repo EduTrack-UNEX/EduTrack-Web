@@ -1,25 +1,26 @@
-import { useId, useState } from "react"
-import Navbar from "../components/Navbar/navbar"
+import { useId, useState } from "react";
+import Navbar from "../components/Navbar/navbar";
 
-
-const fieldClasses = "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-['Signika'] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]";
+const fieldClasses =
+  "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-['Signika'] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]";
 
 const AdcAtividade: React.FC = () => {
- 
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [dataEntrega, setDataEntrega] = useState("");
   const [valorAtividade, setValorAtividade] = useState("");
-  const [status, setStatus] = useState<'concluida' | 'incompleta' | null>(null);
+  const [status, setStatus] = useState<"concluida" | "incompleta" | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
 
-  const atividadeFormId = useId()
-  const nameId = useId()
-  const descricaoId = useId()
-  const dataEntregaId = useId()
-  const valorAtividadeId = useId()
-  const concluidaId = useId()
-  const incompletaId = useId()
+  const atividadeFormId = useId();
+  const nameId = useId();
+  const descricaoId = useId();
+  const dataEntregaId = useId();
+  const valorAtividadeId = useId();
+  const concluidaId = useId();
+  const incompletaId = useId();
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,17 +28,22 @@ const AdcAtividade: React.FC = () => {
       alert("Os campos com * são obrigatórios!");
       return;
     }
-    
+
     setLoading(true);
-    console.log("Salvando:", { nome, descricao, dataEntrega, valorAtividade, status: status });
-    
+    console.log("Salvando:", {
+      nome,
+      descricao,
+      dataEntrega,
+      valorAtividade,
+      status,
+    });
+
     setTimeout(() => {
       alert("Atividade salva com sucesso! (simulado)");
       setLoading(false);
       handleCancel();
     }, 1000);
   };
-
 
   const handleCancel = () => {
     setNome("");
@@ -59,19 +65,12 @@ const AdcAtividade: React.FC = () => {
   };
 
   const handleValorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    let valorFiltrado = value.replace(/[^0-9.,]/g, '');
-    
-    valorFiltrado = valorFiltrado.replace(/,/g, '.');
-
-    const partes = valorFiltrado.split('.');
-    if (partes.length > 2) {
-      valorFiltrado = partes[0] + '.' + partes.slice(1).join('');
-    }
-
-    setValorAtividade(valorFiltrado);
+    let value = e.target.value.replace(/[^0-9.,]/g, "");
+    value = value.replace(/,/g, ".");
+    const partes = value.split(".");
+    if (partes.length > 2) value = partes[0] + "." + partes.slice(1).join("");
+    setValorAtividade(value);
   };
-
 
   return (
     <div className="flex flex-col min-h-screen bg-[#EBEBEB] font-sans">
@@ -92,7 +91,7 @@ const AdcAtividade: React.FC = () => {
         <div className="p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-lg border-2 border-[#293296] font-['Signika']">
           <form onSubmit={handleSave} id={atividadeFormId}>
             <div className="mb-4">
-              <label htmlFor="nome" className="block mb-2 text-[#293296]">
+              <label htmlFor={nameId} className="block mb-2 text-[#293296]">
                 Nome*
               </label>
               <input
@@ -107,7 +106,7 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="descricao" className="block mb-2 text-[#293296]">
+              <label htmlFor={descricaoId} className="block mb-2 text-[#293296]">
                 Descrição
               </label>
               <textarea
@@ -121,10 +120,7 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="dataEntrega"
-                className="block mb-2 text-[#293296]"
-              >
+              <label htmlFor={dataEntregaId} className="block mb-2 text-[#293296]">
                 Data de Entrega
               </label>
               <input
@@ -139,10 +135,7 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="valorAtividade"
-                className="block mb-2 text-[#293296]"
-              >
+              <label htmlFor={valorAtividadeId} className="block mb-2 text-[#293296]">
                 Valor da Atividade (Nota)*
               </label>
               <input
@@ -158,32 +151,24 @@ const AdcAtividade: React.FC = () => {
             </div>
 
             <div className="mb-2">
-              <label htmlFor="concluida" className="block mb-2 text-[#293296]">
-                Status da Atividade
-              </label>
+              <label className="block mb-2 text-[#293296]">Status da Atividade</label>
               <div className="flex flex-col gap-3 mt-3">
                 <label
-                  htmlFor="concluida"
+                  htmlFor={concluidaId}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="status"
                     id={concluidaId}
                     checked={status === "concluida"}
-                    onChange={() =>
-                      setStatus(status === "concluida" ? null : "concluida")
-                    }
+                    onChange={() => setStatus("concluida")}
                     className="sr-only"
                   />
                   <div
-                    className={`
-                    h-4 w-4 flex-shrink-0 
-                    border-2 border-[#293296] 
-                    rounded-sm
-                    flex items-center justify-center 
-                    transition-colors
-                    ${status === "concluida" ? "bg-[#293296]" : ""}
-                  `}
+                    className={`h-4 w-4 flex-shrink-0 border-2 border-[#293296] rounded-sm flex items-center justify-center transition-colors ${
+                      status === "concluida" ? "bg-[#293296]" : ""
+                    }`}
                   >
                     {status === "concluida" && (
                       <svg
@@ -195,11 +180,7 @@ const AdcAtividade: React.FC = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        ></path>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     )}
                   </div>
@@ -207,27 +188,21 @@ const AdcAtividade: React.FC = () => {
                 </label>
 
                 <label
-                  htmlFor="incompleta"
+                  htmlFor={incompletaId}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="status"
                     id={incompletaId}
                     checked={status === "incompleta"}
-                    onChange={() =>
-                      setStatus(status === "incompleta" ? null : "incompleta")
-                    }
+                    onChange={() => setStatus("incompleta")}
                     className="sr-only"
                   />
                   <div
-                    className={`
-                    h-4 w-4 flex-shrink-0 
-                    border-2 border-[#293296] 
-                    rounded-sm
-                    flex items-center justify-center 
-                    transition-colors
-                    ${status === "incompleta" ? "bg-[#293296]" : ""}
-                  `}
+                    className={`h-4 w-4 flex-shrink-0 border-2 border-[#293296] rounded-sm flex items-center justify-center transition-colors ${
+                      status === "incompleta" ? "bg-[#293296]" : ""
+                    }`}
                   >
                     {status === "incompleta" && (
                       <svg
@@ -239,11 +214,7 @@ const AdcAtividade: React.FC = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        ></path>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     )}
                   </div>
@@ -254,11 +225,10 @@ const AdcAtividade: React.FC = () => {
           </form>
         </div>
 
-        {/* Botões */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 w-full max-w-lg">
+        <div className="flex justify-center gap-4 mt-6 w-full max-w-[500px]">
           <button
             type="button"
-            className="px-6 py-3 border-2 border-[#962929] text-[#962929] bg-white rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
             onClick={handleCancel}
           >
             Cancelar
@@ -266,8 +236,8 @@ const AdcAtividade: React.FC = () => {
 
           <button
             type="submit"
-            form="atividadeForm"
-            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] bg-white rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
+            form={atividadeFormId}
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
             disabled={loading}
           >
             {loading ? "Salvando..." : "Salvar"}
@@ -275,7 +245,7 @@ const AdcAtividade: React.FC = () => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default AdcAtividade;

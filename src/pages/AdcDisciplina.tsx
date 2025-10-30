@@ -1,14 +1,13 @@
 import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar"
 
-const inputClasses = "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full" 
+const inputClasses = "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full"
+
 const AdcDisciplina: React.FC = () => {
   const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
   const [loading, setLoading] = useState(false);
 
   const nomeDisciplinaId = useId()
-  const descricaoDisciplinaId = useId()
 
   const handleSave = async () => {
     if (!nome.trim()) {
@@ -24,10 +23,7 @@ const AdcDisciplina: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          nome: nome,
-          descricao: descricao,
-        }),
+        body: JSON.stringify({ nome }),
       });
 
       if (!response.ok) throw new Error("Erro ao salvar disciplina");
@@ -36,7 +32,6 @@ const AdcDisciplina: React.FC = () => {
       console.log("Disciplina salva:", data);
       alert("Disciplina salva com sucesso!");
       setNome("");
-      setDescricao("");
     } catch (error) {
       console.error(error);
       alert("Erro ao salvar disciplina. Tente novamente.");
@@ -47,7 +42,6 @@ const AdcDisciplina: React.FC = () => {
 
   const handleCancel = () => {
     setNome("");
-    setDescricao("");
   };
 
   return (
@@ -83,25 +77,9 @@ const AdcDisciplina: React.FC = () => {
               required
             />
           </div>
-          <div className="mb-4 w-4/5 mx-auto">
-            <label
-              htmlFor="descricaoDisciplina"
-              className="block mb-2 font-['Signika'] text-[#293296]"
-            >
-              Descrição
-            </label>
-            <textarea
-              id={descricaoDisciplinaId}
-              rows={3}
-              placeholder="Digite uma descrição"
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              className={inputClasses}
-            ></textarea>
-          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 w-full max-w-[500px]">
+        <div className="flex justify-center gap-4 mt-6 w-full max-w-[500px]">
           <button
             type="button"
             className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
