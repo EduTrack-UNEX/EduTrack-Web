@@ -1,42 +1,101 @@
 import { useId, useState } from "react"
 import Navbar from "../components/Navbar/navbar"
+import ModalDialog from "../components/ModalDialog"
+import { z } from "zod"
 
 const inputClasses =
   "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]"
+
+const loginSchema = z.object({
+  email: z.email("Por favor, insira um e-mail válido."),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres."),
+})
+
+type FormData = z.infer<typeof loginSchema>
+type FormErrors = Partial<Record<keyof FormData, string>>
+
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  })
+  const [formErrors, setFormErrors] = useState<FormErrors>({})
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
+  const [modalType, setModalType] = useState<"alert" | "success">("alert")
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL
 
   const emailId = useId()
   const passwordId = useId()
 
+  const handleInputChange =
+    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }))
+      if (formErrors[field]) {
+        setFormErrors((prev) => ({ ...prev, [field]: undefined }))
+      }
+    }
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormErrors({})
     setLoading(true)
-    setError("")
+
+    const validationResult = loginSchema.safeParse(formData)
+    if (!validationResult.success) {
+      const errors = validationResult.error.flatten().fieldErrors
+      setFormErrors({
+        email: errors.email?.[0],
+        password: errors.password?.[0],
+      })
+      setModalTitle("Login inválido")
+      setModalMessage("Preencha corretamente todos os campos obrigatórios.")
+      setModalType("alert")
+      setModalOpen(true)
+      setTimeout(() => setModalOpen(false), 2500)
+      setLoading(false)
+      return
+    }
 
     try {
-      const response = await fetch("URL_DO_BACKEND/api/disciplinas", {
+      const response = await fetch(`${API_URL}/api/v1/users/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validationResult.data),
       })
 
-      const data = await response.json()
+      let data: any = {}
+      const contentType = response.headers.get("content-type")
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json()
+      }
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao fazer login")
+        throw new Error(data?.message || "Erro ao fazer login")
       }
 
       localStorage.setItem("token", data.token)
-      console.log("Login bem-sucedido", data)
-      window.location.href = "/dashboard"
-    } catch (err: any) {
-      setError(err.message)
+      setModalTitle("Login realizado!")
+      setModalMessage("Você será redirecionado.")
+      setModalType("success")
+      setModalOpen(true)
+      setTimeout(() => {
+        setModalOpen(false)
+        window.location.href = "/listagem-disciplina"
+      }, 2000)
+    } catch (err) {
+      setModalTitle("Erro de login")
+      setModalMessage(
+        err instanceof Error
+          ? err.message
+          : "Ocorreu um erro inesperado. Tente novamente.",
+      )
+      setModalType("alert")
+      setModalOpen(true)
+      setTimeout(() => setModalOpen(false), 3000)
     } finally {
       setLoading(false)
     }
@@ -45,9 +104,9 @@ const Login: React.FC = () => {
   return (
     <>
       <Navbar />
-       <div className="flex justify-center items-center h-[calc(100vh-200px)] pt-55 px-5 py-10 sm:px-10">
+      <div className="flex justify-center items-center h-[calc(100vh-200px)] pt-55 px-5 py-10 sm:px-10">
         <div className="rounded-lg shadow-md p-6 sm:p-10 w-full max-w-sm text-center box-border border border-[#293296] z-10 mt-10 mb-10">
-         <h1 className="font-['Permanent_Marker'] text-4xl text-[#293296] mb-3 relative font-normal">
+          <h1 className="font-['Permanent_Marker'] text-4xl text-[#293296] mb-3 relative font-normal">
             Login
           </h1>
           <img
@@ -56,11 +115,11 @@ const Login: React.FC = () => {
             style={{ maxWidth: "150px" }}
             alt="Sublinhado"
           />
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} autoComplete="off">
             <div className="text-left mb-6">
               <label
-                htmlFor="email"
-                className="block mb-2 font-[signika]  text-[#293296]"
+                htmlFor={emailId}
+                className="block mb-2 font-[signika] text-[#293296]"
               >
                 Login
               </label>
@@ -68,14 +127,21 @@ const Login: React.FC = () => {
                 type="email"
                 id={emailId}
                 placeholder="Digite seu e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleInputChange("email")}
                 className={inputClasses}
+                disabled={loading}
+                autoComplete="username"
               />
+              {formErrors.email && (
+                <p className="text-red-500 text-sm mt-1 ml-2">
+                  {formErrors.email}
+                </p>
+              )}
             </div>
             <div className="text-left mb-6">
               <label
-                htmlFor="password"
+                htmlFor={passwordId}
                 className="block mb-2 font-[signika] text-[#293296]"
               >
                 Senha
@@ -84,10 +150,17 @@ const Login: React.FC = () => {
                 type="password"
                 id={passwordId}
                 placeholder="Digite sua senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleInputChange("password")}
                 className={inputClasses}
+                disabled={loading}
+                autoComplete="current-password"
               />
+              {formErrors.password && (
+                <p className="text-red-500 text-sm mt-1 ml-2">
+                  {formErrors.password}
+                </p>
+              )}
               <a
                 href="#!"
                 className="block text-right mt-3 text-black no-underline text-xs font-[signika] hover:underline"
@@ -95,9 +168,6 @@ const Login: React.FC = () => {
                 Esqueceu a senha?
               </a>
             </div>
-
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-
             <button
               type="submit"
               disabled={loading}
@@ -107,6 +177,13 @@ const Login: React.FC = () => {
             </button>
           </form>
         </div>
+        <ModalDialog
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          title={modalTitle}
+          message={modalMessage}
+          type={modalType}
+        />
       </div>
     </>
   )
