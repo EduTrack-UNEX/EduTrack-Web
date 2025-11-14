@@ -228,7 +228,7 @@ const AdcAtividade: React.FC = () => {
         <div className="flex justify-center gap-4 mt-6 w-full max-w-[500px]">
           <button
             type="button"
-            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
             onClick={handleCancel}
           >
             Cancelar
@@ -237,7 +237,7 @@ const AdcAtividade: React.FC = () => {
           <button
             type="submit"
             form={atividadeFormId}
-            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 w-full sm:w-auto sm:min-w-[125px]"
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
             disabled={loading}
           >
             {loading ? "Salvando..." : "Salvar"}

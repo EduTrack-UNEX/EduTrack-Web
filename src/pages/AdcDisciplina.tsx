@@ -45,7 +45,7 @@ const AdcDisciplina: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 font-sans">
+    <div className="flex flex-col h-screen font-sans bg-[#EBEBEB]">
       <Navbar />
       <div className="flex flex-col items-center justify-start flex-grow pt-28 overflow-y-auto px-4">
         <h1 className="font-['Permanent_Marker'] text-3xl text-[#293296] mb-2 text-center">

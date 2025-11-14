@@ -5,6 +5,7 @@ import AdcAtividade from "./pages/AdcAtividade"
 import Cadastro from "./pages/cadastro"
 import ListagemDisciplina from "./pages/ListagemDisciplina"
 import VisualizacaoMateria from "./pages/VisualizacaoMateria"
+import Home from "./pages/Home"
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path="/adicionar-disciplina" element={<AdcDisciplina />} />
           <Route path="/adicionar-atividade" element={<AdcAtividade />} />
           <Route path="/listagem-disciplina" element={<ListagemDisciplina />} />
+          <Route path="/Home" element={<Home />} />
+          
           <Route
             path="/visualizacao-materia"
             element={<VisualizacaoMateria />}
