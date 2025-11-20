@@ -117,9 +117,9 @@ const Cadastro: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col justify-center items-center h-auto min-h-[calc(100vh-200px)] pt-40 pb-20">
-        <div className="mb-10">
-          <h1 className="font-['Permanent_Marker'] text-5xl text-[#293296] mb-3 relative font-normal text-center">
+      <div className="flex flex-col justify-center items-center h-auto min-h-[calc(100vh-100px)] pt-40 pb-[180px] px-4 sm:px-6 md:px-8">
+        <div className="mb-10 text-center">
+          <h1 className="font-['Permanent_Marker'] text-5xl text-[#293296] mb-3 relative font-normal">
             Cadastro de Usuário
           </h1>
           <img
@@ -134,6 +134,7 @@ const Cadastro: React.FC = () => {
           onSubmit={handleCadastro}
           className="rounded-lg shadow-md pb-9 pt-4 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl text-center box-border border-[2px] border-[#293296] z-10"
         >
+          
           <div className="w-full max-w-xs sm:max-w-md mx-auto text-left mb-2">
             <label
               htmlFor={nameId}
@@ -157,10 +158,11 @@ const Cadastro: React.FC = () => {
             )}
           </div>
 
+         
           <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left mb-2">
             <label
               htmlFor={emailId}
-              className="block mx-auto mb-1 ml-2 font-[signika] text-[#293296]"
+              className="block mb-1 ml-2 font-[signika] text-[#293296]"
             >
               E-mail
             </label>
@@ -180,6 +182,7 @@ const Cadastro: React.FC = () => {
             )}
           </div>
 
+          
           <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left">
             <label
               htmlFor={passwordId}
@@ -213,24 +216,26 @@ const Cadastro: React.FC = () => {
             type={modalType}
           />
         </form>
-        <div className="flex justify-center gap-4 mt-16">
-          <button
-            type="button"
-            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
-            onClick={handleCancel}
-            disabled={loading}
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
-            disabled={loading}
-            onClick={handleCadastro}
-          >
-            {loading ? "Cadastrando..." : "Cadastrar"}
-          </button>
-        </div>
+
+       
+<div className="flex flex-row justify-center gap-4 mt-16 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl flex-wrap">
+  <button
+    type="button"
+    className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
+    onClick={handleCancel}
+    disabled={loading}
+  >
+    Cancelar
+  </button>
+  <button
+    type="submit"
+    className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
+    disabled={loading}
+    onClick={handleCadastro}
+  >
+    {loading ? "Cadastrando..." : "Cadastrar"}
+  </button>
+</div>
       </div>
     </>
   )
