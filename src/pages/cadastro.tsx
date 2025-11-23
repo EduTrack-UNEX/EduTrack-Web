@@ -1,4 +1,5 @@
 import { useId, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar/navbar"
 import { z } from "zod"
 import ModalDialog from "../components/ModalDialog"
@@ -24,11 +25,11 @@ const Cadastro: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [formErrors, setFormErrors] = useState<FormErrors>({})
   const [apiError, setApiError] = useState("")
-
   const [modalOpen, setModalOpen] = useState(false)
   const [modalTitle, setModalTitle] = useState("")
   const [modalMessage, setModalMessage] = useState("")
   const [modalType, setModalType] = useState<"alert" | "success">("alert")
+  const navigate = useNavigate()
 
   const API_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -93,7 +94,8 @@ const Cadastro: React.FC = () => {
       setModalOpen(true)
 
       setTimeout(() => {
-        window.location.href = "/login"
+        setModalOpen(false)
+        navigate("/login")
       }, 3000)
     } catch (err) {
       setModalTitle("Erro ao cadastrar")
@@ -111,7 +113,7 @@ const Cadastro: React.FC = () => {
   }
 
   const handleCancel = () => {
-    window.location.href = "/"
+    navigate("/")
   }
 
   return (
@@ -134,7 +136,6 @@ const Cadastro: React.FC = () => {
           onSubmit={handleCadastro}
           className="rounded-lg shadow-md pb-9 pt-4 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl text-center box-border border-[2px] border-[#293296] z-10"
         >
-          
           <div className="w-full max-w-xs sm:max-w-md mx-auto text-left mb-2">
             <label
               htmlFor={nameId}
@@ -158,7 +159,6 @@ const Cadastro: React.FC = () => {
             )}
           </div>
 
-         
           <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left mb-2">
             <label
               htmlFor={emailId}
@@ -182,7 +182,6 @@ const Cadastro: React.FC = () => {
             )}
           </div>
 
-          
           <div className="w-full max-w-xs sm:max-w-md pt-2 mx-auto text-left">
             <label
               htmlFor={passwordId}
@@ -217,25 +216,24 @@ const Cadastro: React.FC = () => {
           />
         </form>
 
-       
-<div className="flex flex-row justify-center gap-4 mt-16 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl flex-wrap">
-  <button
-    type="button"
-    className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
-    onClick={handleCancel}
-    disabled={loading}
-  >
-    Cancelar
-  </button>
-  <button
-    type="submit"
-    className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
-    disabled={loading}
-    onClick={handleCadastro}
-  >
-    {loading ? "Cadastrando..." : "Cadastrar"}
-  </button>
-</div>
+        <div className="flex flex-row justify-center gap-4 mt-16 w-full max-w-[95vw] sm:max-w-lg md:max-w-xl flex-wrap">
+          <button
+            type="button"
+            className="px-6 py-3 border-2 border-[#962929] text-[#962929] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#962929] hover:text-white hover:scale-105 min-w-[125px]"
+            onClick={handleCancel}
+            disabled={loading}
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-3 border-2 border-[#968D29] text-[#968D29] rounded-full font-['Signika'] text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#968D29] hover:text-white hover:scale-105 min-w-[125px]"
+            disabled={loading}
+            onClick={handleCadastro}
+          >
+            {loading ? "Cadastrando..." : "Cadastrar"}
+          </button>
+        </div>
       </div>
     </>
   )

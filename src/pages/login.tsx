@@ -1,7 +1,9 @@
 import { useId, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar/navbar"
 import ModalDialog from "../components/ModalDialog"
 import { z } from "zod"
+import { useAuth } from "../hooks/AuthContext"
 
 const inputClasses =
   "w-full p-3 border border-[#293296] rounded-md box-border text-base outline-none font-[signika] text-black placeholder:text-[#C4C4C4] focus:outline-none focus:ring-1 focus:ring-[#293296]"
@@ -25,6 +27,8 @@ const Login: React.FC = () => {
   const [modalTitle, setModalTitle] = useState("")
   const [modalMessage, setModalMessage] = useState("")
   const [modalType, setModalType] = useState<"alert" | "success">("alert")
+  const { setToken } = useAuth()
+  const navigate = useNavigate()
 
   const API_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -77,14 +81,21 @@ const Login: React.FC = () => {
         throw new Error(data?.message || "Erro ao fazer login")
       }
 
-      localStorage.setItem("token", data.token)
+      console.log("Resposta do login:", data)
+      console.log("Token recebido:", data.data.token)
+
+      setToken(data.data.token)
+
+      console.log("Token após setToken:", localStorage.getItem("token"))
+
       setModalTitle("Login realizado!")
       setModalMessage("Você será redirecionado.")
       setModalType("success")
       setModalOpen(true)
+
       setTimeout(() => {
         setModalOpen(false)
-        window.location.href = "/listagem-disciplina"
+        navigate("/adicionar-disciplina")
       }, 2000)
     } catch (err) {
       setModalTitle("Erro de login")
