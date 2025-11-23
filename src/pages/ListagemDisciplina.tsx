@@ -1,7 +1,48 @@
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar/navbar"
 import SubjectCard from "../components/subjectCard"
+import { useAuth } from "../hooks/AuthContext"
+
+export interface Subject {
+  id: number
+  name: string
+  progress: number
+  createdAt: string
+  updatedAt: string
+  average: number | null
+}
 
 export default function ListagemDisciplina() {
+  const [subjects, setSubjects] = useState<Subject[]>([])
+  const navigate = useNavigate()
+  const { token } = useAuth()
+
+  useEffect(() => {
+    if (!token) return
+
+    fetch("/api/v1/subjects", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Não autorizado")
+        return res.json()
+      })
+      .then((apiResponse) => {
+        setSubjects(apiResponse.data)
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar matérias", err)
+        setSubjects([])
+      })
+  }, [token])
+
+  const handleCardClick = (id: string) => {
+    navigate(`/visualizacao-materia/${id}`)
+  }
+
   return (
     <div className="relative min-h-screen bg-[#EBEBEB] flex flex-col items-center pt-[110px] pb-[110px]">
       <Navbar />
@@ -16,18 +57,24 @@ export default function ListagemDisciplina() {
           alt="Sublinhado"
         />
 
-        <div className="grid grid-cols-5 gap-10 mb-24">
-          {Array.from({ length: 15 }).map(() => {
-            const uniqueKey = crypto.randomUUID()
-            return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center mb-24 w-full max-w-screen-xl">
+          {subjects.length > 0 ? (
+            subjects.map((subject) => (
               <SubjectCard
-                key={uniqueKey}
-                name="Python"
-                nota="10/10"
-                progresso="80%"
+                key={subject.id}
+                name={subject.name}
+                nota={subject.average !== null ? String(subject.average) : "-"}
+                progresso={
+                  subject.progress !== undefined ? `${subject.progress}%` : "-"
+                }
+                onClick={() => handleCardClick(subject.id.toString())}
               />
-            )
-          })}
+            ))
+          ) : (
+            <span className="col-span-5 text-center text-[#968D29] font-['Permanent_Marker']">
+              Nenhuma matéria encontrada
+            </span>
+          )}
         </div>
       </main>
     </div>
