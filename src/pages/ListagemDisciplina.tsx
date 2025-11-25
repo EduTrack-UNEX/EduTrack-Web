@@ -56,6 +56,13 @@ export default function ListagemDisciplina() {
           style={{ maxWidth: "300px" }}
           alt="Sublinhado"
         />
+     <button
+  type="button"
+  onClick={() => navigate("/adicionar-disciplina")}
+  className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-lg cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-[-20px] font-[signika] hover:opacity-90 disabled:opacity-50"
+>
+  Adicionar matéria
+</button>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center mb-24 w-full max-w-screen-xl">
           {subjects.length > 0 ? (
