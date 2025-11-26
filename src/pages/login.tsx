@@ -95,7 +95,7 @@ const Login: React.FC = () => {
 
       setTimeout(() => {
         setModalOpen(false)
-        navigate("/adicionar-disciplina")
+        navigate("/listagem-disciplina")
       }, 2000)
     } catch (err) {
       setModalTitle("Erro de login")

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar/navbar"
 import SubjectCard from "../components/subjectCard"
 import { useAuth } from "../hooks/AuthContext"
+import Loader from "../components/Loader"
 
 export interface Subject {
   id: number
@@ -15,6 +16,7 @@ export interface Subject {
 
 export default function ListagemDisciplina() {
   const [subjects, setSubjects] = useState<Subject[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const { token } = useAuth()
 
@@ -32,10 +34,12 @@ export default function ListagemDisciplina() {
       })
       .then((apiResponse) => {
         setSubjects(apiResponse.data)
+        setIsLoading(false)
       })
       .catch((err) => {
         console.error("Erro ao buscar matérias", err)
         setSubjects([])
+        setIsLoading(false)
       })
   }, [token])
 
@@ -56,33 +60,41 @@ export default function ListagemDisciplina() {
           style={{ maxWidth: "300px" }}
           alt="Sublinhado"
         />
-     <button
-  type="button"
-  onClick={() => navigate("/adicionar-disciplina")}
-  className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-lg cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-[-20px] font-[signika] hover:opacity-90 disabled:opacity-50"
->
-  Adicionar matéria
-</button>
+        <button
+          type="button"
+          onClick={() => navigate("/adicionar-disciplina")}
+          className="bg-[#293296] text-white py-3 px-10 border-none rounded-full text-lg cursor-pointer transition-colors duration-300 block w-auto mx-auto mt-[-20px] font-[signika] hover:opacity-90 disabled:opacity-50"
+        >
+          Adicionar matéria
+        </button>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center mb-24 w-full max-w-screen-xl">
-          {subjects.length > 0 ? (
-            subjects.map((subject) => (
-              <SubjectCard
-                key={subject.id}
-                name={subject.name}
-                nota={subject.average !== null ? String(subject.average) : "-"}
-                progresso={
-                  subject.progress !== undefined ? `${subject.progress}%` : "-"
-                }
-                onClick={() => handleCardClick(subject.id.toString())}
-              />
-            ))
-          ) : (
-            <span className="col-span-5 text-center text-[#968D29] font-['Permanent_Marker']">
-              Nenhuma matéria encontrada
-            </span>
-          )}
-        </div>
+        {isLoading ? (
+          <Loader text="Carregando matérias..." />
+        ) : (
+          <div className="flex flex-wrap justify-center items-start gap-6 w-full py-6 mt-10">
+            {subjects.length > 0 ? (
+              subjects.map((subject) => (
+                <SubjectCard
+                  key={subject.id}
+                  name={subject.name}
+                  nota={
+                    subject.average !== null ? String(subject.average) : "-"
+                  }
+                  progresso={
+                    subject.progress !== undefined
+                      ? `${subject.progress}%`
+                      : "-"
+                  }
+                  onClick={() => handleCardClick(subject.id.toString())}
+                />
+              ))
+            ) : (
+              <span className="col-span-5 text-center text-[#968D29] font-['Permanent_Marker']">
+                Nenhuma matéria encontrada
+              </span>
+            )}
+          </div>
+        )}
       </main>
     </div>
   )

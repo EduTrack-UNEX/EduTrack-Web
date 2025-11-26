@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+20&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Permanent+Marker&family=Signika:wght@300..700&display=swap');
 
 @import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
 
 body {
   background-color: #EBEBEB;

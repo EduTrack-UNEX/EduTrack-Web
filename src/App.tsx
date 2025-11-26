@@ -7,7 +7,7 @@ import Home from "./pages/Home"
 import { AuthProvider } from "./hooks/AuthContext"
 import AdcDisciplina from "./pages/AdcDisciplina"
 import ListagemDisciplina from "./pages/ListagemDisciplina"
-
+import EditAtividade from "./pages/EditAtividade"
 
 function App() {
   return (
@@ -22,7 +22,8 @@ function App() {
             <Route path="/listagem-disciplina" element={<ListagemDisciplina />} />
             <Route path="/visualizacao-materia/:id" element={<VisualizacaoMateria />} />
             <Route path="/adicionar-disciplina" element={<AdcDisciplina />} />
-            <Route path="/adicionar-atividade" element={<AdcAtividade />} />
+            <Route path="/adicionar-atividade/:id" element={<AdcAtividade />} />
+            <Route path="/editar-atividade/:id/:taskId" element={<EditAtividade />} />
           </Routes>
         </div>
       </BrowserRouter>

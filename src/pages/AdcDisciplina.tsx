@@ -2,6 +2,7 @@ import { useId, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar/navbar"
 import { useAuth } from "../hooks/AuthContext"
+import ModalDialog from "../components/ModalDialog"
 
 const inputClasses =
   "p-3 border border-[#293296] rounded-md text-black placeholder:text-[#C4C4C4] resize-y focus:outline-none focus:ring-1 focus:ring-[#293296] w-full"
@@ -12,17 +13,28 @@ const AdcDisciplina: React.FC = () => {
   const { token } = useAuth()
   const navigate = useNavigate()
 
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalMessage, setModalMessage] = useState("")
+  const [modalType, setModalType] = useState<"alert" | "success">("alert")
+
   const API_ENDPOINT = "/api/v1/subjects"
   const nomeDisciplinaId = useId()
 
   const handleSave = async () => {
     if (!nome.trim()) {
-      alert("O nome da disciplina é obrigatório!")
+      setModalTitle("Campo obrigatório")
+      setModalMessage("O nome da disciplina é obrigatório!")
+      setModalType("alert")
+      setModalOpen(true)
       return
     }
 
     if (!token) {
-      alert("Você precisa estar logado para adicionar disciplinas!")
+      setModalTitle("Autenticação necessária")
+      setModalMessage("Você precisa estar logado para adicionar disciplinas!")
+      setModalType("alert")
+      setModalOpen(true)
       return
     }
 
@@ -45,16 +57,27 @@ const AdcDisciplina: React.FC = () => {
 
       const data = await response.json()
       console.log("Disciplina salva:", data)
-      alert("Disciplina salva com sucesso!")
+
+      setModalTitle("Sucesso!")
+      setModalMessage("Disciplina salva com sucesso!")
+      setModalType("success")
+      setModalOpen(true)
+
       setNome("")
-      navigate("/listagem-disciplina")
+
+      setTimeout(() => {
+        navigate("/listagem-disciplina")
+      }, 1500)
     } catch (error) {
       console.error(error)
-      alert(
+      setModalTitle("Erro ao salvar")
+      setModalMessage(
         error instanceof Error
           ? error.message
-          : "Erro ao salvar disciplina. Tente novamente."
+          : "Erro ao salvar disciplina. Tente novamente.",
       )
+      setModalType("alert")
+      setModalOpen(true)
     } finally {
       setLoading(false)
     }
@@ -68,6 +91,15 @@ const AdcDisciplina: React.FC = () => {
   return (
     <div className="flex flex-col h-screen font-sans bg-[#EBEBEB]">
       <Navbar />
+
+      <ModalDialog
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title={modalTitle}
+        message={modalMessage}
+        type={modalType}
+      />
+
       <div className="flex flex-col items-center justify-start flex-grow pt-28 overflow-y-auto px-4">
         <h1 className="font-['Permanent_Marker'] text-3xl text-[#293296] mb-2 text-center">
           Adicionar Disciplina
