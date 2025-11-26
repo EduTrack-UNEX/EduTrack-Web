@@ -21,26 +21,31 @@ const Navbar: React.FC = () => {
     { label: "CONTATO", id: "contato" },
   ];
 
-  
   const buttons: LinkButton[] = [
-    {
-      label: "CADASTRE-SE",
-      route: "/cadastro",
-      showForLogged: false, 
-      allowedPaths: ["/", "/login", "/home", "/cadastro"],
-    },
-    {
-      label: "MINHAS MATÉRIAS",
-      route: "/listagem-disciplina",
-      showForLogged: true, 
-      allowedPaths: [
-        "/listagem-disciplina",
-        "/visualizacao-materia",
-        "/adicionar-disciplina",
-        "/adicionar-atividade",
-      ],
-    },
-  ];
+  {
+    label: "CADASTRE-SE",
+    route: "/cadastro",
+    showForLogged: false,
+    allowedPaths: ["/", "/login", "/home", "/cadastro"],
+  },
+  {
+    label: "LOGIN",
+    route: "/login",
+    showForLogged: false,
+    allowedPaths: ["/", "/login", "/home", "/cadastro"],
+  },
+  {
+    label: "MINHAS MATÉRIAS",
+    route: "/listagem-disciplina",
+    showForLogged: true,
+    allowedPaths: [
+      "/listagem-disciplina",
+      "/visualizacao-materia",
+      "/adicionar-disciplina",
+      "/adicionar-atividade",
+    ],
+  },
+];
 
   const visibleButtons = buttons.filter((btn) => {
     if (btn.showForLogged && !token) return false;
@@ -70,7 +75,6 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 z-10 w-full h-[80px] bg-[#293296] rounded-b-[40px] flex items-center shadow-md px-4 sm:px-6 md:px-8">
-        {/* Logo */}
         <img
           src="/logo.svg"
           alt="Logo EduTrack"
